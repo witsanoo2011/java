@@ -1,0 +1,141 @@
+import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
+
+public class MainActivity extends AppCompatActivity {
+    boolean running = false;
+    int second =0;
+    boolean wasRunning;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        if (savedInstanceState != null) {
+            second = savedInstanceState.getInt("second");
+            running = savedInstanceState.getBoolean("running");
+            wasRunning = savedInstanceState.getBoolean("wasRunning");
+        }
+        runTimer();
+    }
+    @Override
+    public void onPause(){
+        super.onPause();
+        wasRunning = running;
+        running = false;
+    }
+    @Override
+    public void onResume(){
+        super.onResume();
+        if (wasRunning){
+            running = true;
+        }
+    }
+
+    public void onSaveInstanceState(Bundle saveinstanceState) {
+        super.onSaveInstanceState(saveinstanceState);
+        saveinstanceState.putInt("second", second);
+        saveinstanceState.putBoolean("running", running);
+        saveinstanceState.putBoolean("wasRunning", wasRunning);
+    }
+    @Override
+    public void onStop(){
+        super.onStop();
+        running = false;
+    }
+    @Override
+    public void onStart(){
+        super.onStart();
+        if(wasRunning)
+        running = true;
+    }
+
+    private void runTimer() {
+        final TextView tvWatch = (TextView) findViewById(R.id.tvWatch);
+
+        final Handler handler = new Handler();
+        handler.post(new Runnable() {
+            @Override
+            public void run() {
+                int hours = second/3600;
+                int minteds = (second%3600)/60;
+                int secs = second%60;
+                String time = String.format("%02d:%02d:%02d",hours,minteds,secs);
+                tvWatch.setText(time);
+                if(running){
+                    second++;
+                }
+                handler.postDelayed(this,1000);
+            }
+        });
+    }
+
+    public void onClickStart(View view) {
+        running = true;
+    }
+    public void onClickStop(View view) {
+        running = false;
+    }
+    public void onClickReset(View view) {
+        running = false;
+        second = 0;
+    }
+}
+
+-----------------------------------------------------------------------------------------
+
+// Code Btn //
+
+<TextView
+        android:id="@+id/tvWatch"
+        android:layout_width="363dp"
+        android:layout_height="wrap_content"
+        android:text="00:00:00"
+        android:textSize="56dp"
+        android:textAlignment="center"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.501"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.072" />
+
+    <Button
+        android:id="@+id/btnstart"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start"
+        android:onClick="onClickStart"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.054"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.252" />
+
+    <Button
+        android:id="@+id/btnstop"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stop"
+        android:onClick="onClickStop"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.252" />
+
+    <Button
+        android:id="@+id/btnreset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Reset"
+        android:onClick="onClickReset"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.945"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.252" />

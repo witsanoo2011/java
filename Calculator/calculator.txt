@@ -1,0 +1,177 @@
+// CODE BTN 1 //
+
+<EditText
+        android:id="@+id/in1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.034" />
+
+    <EditText
+        android:id="@+id/in2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="number"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.502"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.163" />
+
+    <Button
+        android:id="@+id/Add"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="+"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.02"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.33" />
+
+    <Button
+        android:id="@+id/Sub"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="-"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.344"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.33" />
+
+    <Button
+        android:id="@+id/Mul"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="X"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.665"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.33" />
+
+    <Button
+        android:id="@+id/Div"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="/"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.986"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.33" />
+
+    <TextView
+        android:id="@+id/TextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="New Text"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+------------------------------------------------------------------------------------------------------------
+
+// CODE ACTIVITY 1 //
+
+import android.app.DialogFragment;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import org.w3c.dom.Text;
+
+public class MainActivity extends AppCompatActivity {
+    private EditText in1;
+    private EditText in2;
+    private Button Add;
+    private Button Sub;
+    private Button Mul;
+    private Button Div;
+    private TextView txt1;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        in1=(EditText)findViewById(R.id.in1);
+        in2=(EditText)findViewById(R.id.in2);
+        Add=(Button)findViewById(R.id.Add);
+        Sub=(Button)findViewById(R.id.Sub);
+        Mul=(Button)findViewById(R.id.Mul);
+        Div=(Button)findViewById(R.id.Div);
+        txt1=(TextView)findViewById(R.id.TextView);
+
+        Add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int x = Integer.parseInt(in1.getText().toString());
+                int y = Integer.parseInt(in2.getText().toString());
+
+                int result = (x+y);
+
+                txt1.setText(String.valueOf(result));
+            }
+        });
+
+        Sub.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int x = Integer.parseInt(in1.getText().toString());
+                int y = Integer.parseInt(in2.getText().toString());
+
+                int result = (x-y);
+
+                txt1.setText(String.valueOf(result));
+            }
+        });
+
+        Mul.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int x = Integer.parseInt(in1.getText().toString());
+                int y = Integer.parseInt(in2.getText().toString());
+
+                int result = (x*y);
+
+                txt1.setText(String.valueOf(result));
+            }
+        });
+
+        Div.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    double x = Integer.parseInt(in1.getText().toString());
+                    double y = Integer.parseInt(in2.getText().toString());
+
+                    double result = (x/y);
+
+                    if (y == 0){
+                        txt1.setText("DON'T SHOW NUMBER 0");
+                    } else {
+                        txt1.setText(String.valueOf(result));
+                    }
+                }
+        });
+
+    }
+}

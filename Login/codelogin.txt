@@ -1,0 +1,208 @@
+// code activity 1 //
+
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
+
+public class MainActivity extends AppCompatActivity {
+    String[] choice;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+
+        choice = getResources().getStringArray(R.array.spnList);
+        Spinner s1 = (Spinner) findViewById(R.id.spinner2);
+        s1.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> arg0, View arg1,int arg2, long arg3) {
+                int index = arg0.getSelectedItemPosition();
+                TextView tvDisplay = (TextView) findViewById(R.id.TVDisplay);
+                tvDisplay.setText(choice[index]);
+                /*Toast.makeText(getBaseContext(),"You have selected item : " + choice[index],
+                Toast.LENGTH_SHORT).show();*/
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> arg0) {
+            }
+        });
+    }
+    public void btnLoginClick(View view) {
+
+        EditText edtUser = (EditText) findViewById(R.id.adtUser);
+        String username = edtUser.getText().toString();
+
+        EditText edtPass = (EditText) findViewById(R.id.adtPass);
+        String password = edtPass.getText().toString();
+        
+        //Toast.makeText(this,username+ " "+Password,Toast.LENGTH_SHORT).show();*/
+
+        Intent intent = new Intent (this, Main2Activity.class);
+        intent.putExtra("var01",username);
+        intent.putExtra("var02",password);
+        startActivityForResult(intent, 2);// Activity is started with requestCode 2
+    }
+    // Call Back method  to get the Message form other Activity
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        super.onActivityResult(requestCode, resultCode, data);
+        // check if the request code is same as what is passed  here it is 2
+        if(requestCode==2)// Activity is started with requestCode 2
+        {
+            String message=data.getStringExtra("MESSAGE");
+            TextView tvOutput = (TextView)findViewById(R.id.TVDisplay);
+            tvOutput.setText(message);
+            //textView1.setText(message);
+        }
+    }
+}
+
+------------------------------------------------------------------------------
+
+// code activity 2 //
+
+import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.view.View;
+import android.widget.TextView;
+
+public class Main2Activity extends AppCompatActivity {
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main2);
+
+        Intent intent = getIntent();
+        String var01 = intent.getStringExtra ("var01");
+        String var02 = intent.getStringExtra ("var02");
+
+        TextView tvOutput = (TextView)findViewById(R.id.textView);
+        tvOutput.setText(var01+"\n"+var02);
+    }
+
+    public void btnBack (View view) {
+        Intent intent=new Intent();
+        intent.putExtra("MESSAGE","OK");
+        setResult(2,intent);
+        finish();//finishing activity
+    }
+}
+
+------------------------------------------------------------------------------
+
+// Code btn activity 1 //
+
+<EditText
+        android:id="@+id/adtUser"
+        android:layout_width="361dp"
+        android:layout_height="52dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Username"
+        android:inputType="textPersonName"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <EditText
+        android:id="@+id/adtPass"
+        android:layout_width="361dp"
+        android:layout_height="55dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:ems="10"
+        android:hint="Password"
+        android:inputType="textPassword"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.571"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/adtUser" />
+
+    <Button
+        android:id="@+id/btnLogin"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="144dp"
+        android:ems="10"
+        android:hint="Login"
+        android:inputType="textPersonName"
+        android:onClick="btnLoginClick"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.869"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/TVDisplay"
+        android:layout_width="355dp"
+        android:layout_height="268dp"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text=""
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnLogin" />
+
+    <Spinner
+        android:id="@+id/spinner2"
+        android:text="SPN02"
+        android:entries="@array/spnList"
+        android:layout_width="218dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/TVDisplay"
+        app:layout_constraintEnd_toStartOf="@+id/btnLogin"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/adtPass" />
+
+</android.support.constraint.ConstraintLayout>
+
+----------------------------------------------------------------------------------------------------------------------------------------
+
+// code btn activity 2 //
+ 
+   <TextView
+        android:id="@+id/textView"
+        android:layout_width="350dp"
+        android:layout_height="188dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:text="TextView"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/button"
+        android:onClick="btnBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="8dp"
+        android:layout_marginTop="8dp"
+        android:text="Button"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+</android.support.constraint.ConstraintLayout>
